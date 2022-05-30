@@ -1,0 +1,774 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Receipts_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nameCategory" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NumCompeny_tbl">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="numCompany" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="NumCompenyCategory_tbl">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="int" />
+          <Property Name="word" Type="int" />
+          <Property Name="countShow" Type="int" />
+        </EntityType>
+        <EntityType Name="Products_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nameProduct" Type="nvarchar" MaxLength="100" />
+          <Property Name="amount" Type="int" />
+          <Property Name="sumProduct" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="receipt" Type="int" />
+        </EntityType>
+        <EntityType Name="Receipt_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dateReceipt" Type="datetime" />
+          <Property Name="nameShop" Type="nvarchar" MaxLength="100" />
+          <Property Name="numCompany" Type="varchar" MaxLength="10" />
+          <Property Name="totalSum" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="myUser" Type="varchar" MaxLength="1" />
+          <Property Name="category" Type="int" />
+          <Property Name="path" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="UnusingWord_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="unusingWord" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="User_tbl">
+          <Key>
+            <PropertyRef Name="Phone" />
+          </Key>
+          <Property Name="Phone" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="50" />
+          <Property Name="businessName" Type="nvarchar" MaxLength="100" />
+          <Property Name="emailAddress" Type="nvarchar" MaxLength="320" />
+        </EntityType>
+        <EntityType Name="WordCategory_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoryWord" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="WordPerCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="int" />
+          <Property Name="word" Type="int" />
+        </EntityType>
+        <EntityType Name="WordPerCategory_tbl">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category" Type="int" />
+          <Property Name="word" Type="int" />
+          <Property Name="countWord" Type="int" />
+        </EntityType>
+        <Association Name="FK__NumCompen__categ__38996AB5">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="NumCompenyCategory_tbl" Type="Self.NumCompenyCategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NumCompenyCategory_tbl">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NumCompeny__word__398D8EEE">
+          <End Role="NumCompeny_tbl" Type="Self.NumCompeny_tbl" Multiplicity="0..1" />
+          <End Role="NumCompenyCategory_tbl" Type="Self.NumCompenyCategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NumCompeny_tbl">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NumCompenyCategory_tbl">
+              <PropertyRef Name="word" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products___recei__2C3393D0">
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="0..1" />
+          <End Role="Products_tbl" Type="Self.Products_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products_tbl">
+              <PropertyRef Name="receipt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products___recei__59FA5E80">
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="0..1" />
+          <End Role="Products_tbl" Type="Self.Products_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products_tbl">
+              <PropertyRef Name="receipt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt_t__categ__29572725">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt_tbl">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt_t__categ__5AEE82B9">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt_tbl">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt_t__myUse__286302EC">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Phone" />
+            </Principal>
+            <Dependent Role="Receipt_tbl">
+              <PropertyRef Name="myUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt_t__myUse__5BE2A6F2">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Phone" />
+            </Principal>
+            <Dependent Role="Receipt_tbl">
+              <PropertyRef Name="myUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPerCa__categ__32E0915F">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="WordPerCategory_tbl" Type="Self.WordPerCategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPerCategory_tbl">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPerCa__categ__5CD6CB2B">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="WordPerCategory" Type="Self.WordPerCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPerCategory">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPerCat__word__33D4B598">
+          <End Role="WordCategory_tbl" Type="Self.WordCategory_tbl" Multiplicity="0..1" />
+          <End Role="WordPerCategory_tbl" Type="Self.WordPerCategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WordCategory_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPerCategory_tbl">
+              <PropertyRef Name="word" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPerCat__word__5DCAEF64">
+          <End Role="WordCategory_tbl" Type="Self.WordCategory_tbl" Multiplicity="0..1" />
+          <End Role="WordPerCategory" Type="Self.WordPerCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WordCategory_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPerCategory">
+              <PropertyRef Name="word" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Receipts_dbModelStoreContainer">
+          <EntitySet Name="Category_tbl" EntityType="Self.Category_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NumCompeny_tbl" EntityType="Self.NumCompeny_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NumCompenyCategory_tbl" EntityType="Self.NumCompenyCategory_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products_tbl" EntityType="Self.Products_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Receipt_tbl" EntityType="Self.Receipt_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UnusingWord_tbl" EntityType="Self.UnusingWord_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_tbl" EntityType="Self.User_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WordCategory_tbl" EntityType="Self.WordCategory_tbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WordPerCategory" EntityType="Self.WordPerCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WordPerCategory_tbl" EntityType="Self.WordPerCategory_tbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__NumCompen__categ__38996AB5" Association="Self.FK__NumCompen__categ__38996AB5">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="NumCompenyCategory_tbl" EntitySet="NumCompenyCategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NumCompeny__word__398D8EEE" Association="Self.FK__NumCompeny__word__398D8EEE">
+            <End Role="NumCompeny_tbl" EntitySet="NumCompeny_tbl" />
+            <End Role="NumCompenyCategory_tbl" EntitySet="NumCompenyCategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products___recei__2C3393D0" Association="Self.FK__Products___recei__2C3393D0">
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+            <End Role="Products_tbl" EntitySet="Products_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products___recei__59FA5E80" Association="Self.FK__Products___recei__59FA5E80">
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+            <End Role="Products_tbl" EntitySet="Products_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt_t__categ__29572725" Association="Self.FK__Receipt_t__categ__29572725">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt_t__categ__5AEE82B9" Association="Self.FK__Receipt_t__categ__5AEE82B9">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt_t__myUse__286302EC" Association="Self.FK__Receipt_t__myUse__286302EC">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt_t__myUse__5BE2A6F2" Association="Self.FK__Receipt_t__myUse__5BE2A6F2">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPerCa__categ__32E0915F" Association="Self.FK__WordPerCa__categ__32E0915F">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="WordPerCategory_tbl" EntitySet="WordPerCategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPerCa__categ__5CD6CB2B" Association="Self.FK__WordPerCa__categ__5CD6CB2B">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="WordPerCategory" EntitySet="WordPerCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPerCat__word__33D4B598" Association="Self.FK__WordPerCat__word__33D4B598">
+            <End Role="WordCategory_tbl" EntitySet="WordCategory_tbl" />
+            <End Role="WordPerCategory_tbl" EntitySet="WordPerCategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPerCat__word__5DCAEF64" Association="Self.FK__WordPerCat__word__5DCAEF64">
+            <End Role="WordCategory_tbl" EntitySet="WordCategory_tbl" />
+            <End Role="WordPerCategory" EntitySet="WordPerCategory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Receipts_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nameCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NumCompenyCategory_tbl" Relationship="Self.FK__NumCompen__categ__38996AB5" FromRole="Category_tbl" ToRole="NumCompenyCategory_tbl" />
+          <NavigationProperty Name="Receipt_tbl" Relationship="Self.FK__Receipt_t__categ__29572725" FromRole="Category_tbl" ToRole="Receipt_tbl" />
+          <NavigationProperty Name="Receipt_tbl1" Relationship="Self.FK__Receipt_t__categ__5AEE82B9" FromRole="Category_tbl" ToRole="Receipt_tbl" />
+          <NavigationProperty Name="WordPerCategory_tbl" Relationship="Self.FK__WordPerCa__categ__32E0915F" FromRole="Category_tbl" ToRole="WordPerCategory_tbl" />
+          <NavigationProperty Name="WordPerCategory" Relationship="Self.FK__WordPerCa__categ__5CD6CB2B" FromRole="Category_tbl" ToRole="WordPerCategory" />
+        </EntityType>
+        <EntityType Name="NumCompeny_tbl">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="numCompany" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="NumCompenyCategory_tbl" Relationship="Self.FK__NumCompeny__word__398D8EEE" FromRole="NumCompeny_tbl" ToRole="NumCompenyCategory_tbl" />
+        </EntityType>
+        <EntityType Name="NumCompenyCategory_tbl">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="Int32" />
+          <Property Name="word" Type="Int32" />
+          <Property Name="countShow" Type="Int32" />
+          <NavigationProperty Name="Category_tbl" Relationship="Self.FK__NumCompen__categ__38996AB5" FromRole="NumCompenyCategory_tbl" ToRole="Category_tbl" />
+          <NavigationProperty Name="NumCompeny_tbl" Relationship="Self.FK__NumCompeny__word__398D8EEE" FromRole="NumCompenyCategory_tbl" ToRole="NumCompeny_tbl" />
+        </EntityType>
+        <EntityType Name="Products_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nameProduct" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="amount" Type="Int32" />
+          <Property Name="sumProduct" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="receipt" Type="Int32" />
+          <NavigationProperty Name="Receipt_tbl" Relationship="Self.FK__Products___recei__2C3393D0" FromRole="Products_tbl" ToRole="Receipt_tbl" />
+          <NavigationProperty Name="Receipt_tbl1" Relationship="Self.FK__Products___recei__59FA5E80" FromRole="Products_tbl" ToRole="Receipt_tbl" />
+        </EntityType>
+        <EntityType Name="Receipt_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dateReceipt" Type="DateTime" Precision="3" />
+          <Property Name="nameShop" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="numCompany" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="totalSum" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="myUser" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="category" Type="Int32" />
+          <Property Name="path" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Category_tbl" Relationship="Self.FK__Receipt_t__categ__29572725" FromRole="Receipt_tbl" ToRole="Category_tbl" />
+          <NavigationProperty Name="Category_tbl1" Relationship="Self.FK__Receipt_t__categ__5AEE82B9" FromRole="Receipt_tbl" ToRole="Category_tbl" />
+          <NavigationProperty Name="Products_tbl" Relationship="Self.FK__Products___recei__2C3393D0" FromRole="Receipt_tbl" ToRole="Products_tbl" />
+          <NavigationProperty Name="Products_tbl1" Relationship="Self.FK__Products___recei__59FA5E80" FromRole="Receipt_tbl" ToRole="Products_tbl" />
+          <NavigationProperty Name="User_tbl" Relationship="Self.FK__Receipt_t__myUse__286302EC" FromRole="Receipt_tbl" ToRole="User_tbl" />
+          <NavigationProperty Name="User_tbl1" Relationship="Self.FK__Receipt_t__myUse__5BE2A6F2" FromRole="Receipt_tbl" ToRole="User_tbl" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="UnusingWord_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="unusingWord" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="User_tbl">
+          <Key>
+            <PropertyRef Name="Phone" />
+          </Key>
+          <Property Name="Phone" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="businessName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="emailAddress" Type="String" MaxLength="320" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Receipt_tbl" Relationship="Self.FK__Receipt_t__myUse__286302EC" FromRole="User_tbl" ToRole="Receipt_tbl" />
+          <NavigationProperty Name="Receipt_tbl1" Relationship="Self.FK__Receipt_t__myUse__5BE2A6F2" FromRole="User_tbl" ToRole="Receipt_tbl" />
+        </EntityType>
+        <EntityType Name="WordCategory_tbl">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoryWord" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="WordPerCategory_tbl" Relationship="Self.FK__WordPerCat__word__33D4B598" FromRole="WordCategory_tbl" ToRole="WordPerCategory_tbl" />
+          <NavigationProperty Name="WordPerCategory" Relationship="Self.FK__WordPerCat__word__5DCAEF64" FromRole="WordCategory_tbl" ToRole="WordPerCategory" />
+        </EntityType>
+        <EntityType Name="WordPerCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="Int32" />
+          <Property Name="word" Type="Int32" />
+          <NavigationProperty Name="Category_tbl" Relationship="Self.FK__WordPerCa__categ__5CD6CB2B" FromRole="WordPerCategory" ToRole="Category_tbl" />
+          <NavigationProperty Name="WordCategory_tbl" Relationship="Self.FK__WordPerCat__word__5DCAEF64" FromRole="WordPerCategory" ToRole="WordCategory_tbl" />
+        </EntityType>
+        <EntityType Name="WordPerCategory_tbl">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category" Type="Int32" />
+          <Property Name="word" Type="Int32" />
+          <Property Name="countWord" Type="Int32" />
+          <NavigationProperty Name="Category_tbl" Relationship="Self.FK__WordPerCa__categ__32E0915F" FromRole="WordPerCategory_tbl" ToRole="Category_tbl" />
+          <NavigationProperty Name="WordCategory_tbl" Relationship="Self.FK__WordPerCat__word__33D4B598" FromRole="WordPerCategory_tbl" ToRole="WordCategory_tbl" />
+        </EntityType>
+        <Association Name="FK__NumCompen__categ__38996AB5">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="NumCompenyCategory_tbl" Type="Self.NumCompenyCategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NumCompenyCategory_tbl">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt_t__categ__29572725">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt_tbl">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt_t__categ__5AEE82B9">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Receipt_tbl">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPerCa__categ__32E0915F">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="WordPerCategory_tbl" Type="Self.WordPerCategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPerCategory_tbl">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPerCa__categ__5CD6CB2B">
+          <End Role="Category_tbl" Type="Self.Category_tbl" Multiplicity="0..1" />
+          <End Role="WordPerCategory" Type="Self.WordPerCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPerCategory">
+              <PropertyRef Name="category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NumCompeny__word__398D8EEE">
+          <End Role="NumCompeny_tbl" Type="Self.NumCompeny_tbl" Multiplicity="0..1" />
+          <End Role="NumCompenyCategory_tbl" Type="Self.NumCompenyCategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NumCompeny_tbl">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NumCompenyCategory_tbl">
+              <PropertyRef Name="word" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products___recei__2C3393D0">
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="0..1" />
+          <End Role="Products_tbl" Type="Self.Products_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products_tbl">
+              <PropertyRef Name="receipt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products___recei__59FA5E80">
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="0..1" />
+          <End Role="Products_tbl" Type="Self.Products_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receipt_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Products_tbl">
+              <PropertyRef Name="receipt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt_t__myUse__286302EC">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Phone" />
+            </Principal>
+            <Dependent Role="Receipt_tbl">
+              <PropertyRef Name="myUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Receipt_t__myUse__5BE2A6F2">
+          <End Role="User_tbl" Type="Self.User_tbl" Multiplicity="0..1" />
+          <End Role="Receipt_tbl" Type="Self.Receipt_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_tbl">
+              <PropertyRef Name="Phone" />
+            </Principal>
+            <Dependent Role="Receipt_tbl">
+              <PropertyRef Name="myUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPerCat__word__33D4B598">
+          <End Role="WordCategory_tbl" Type="Self.WordCategory_tbl" Multiplicity="0..1" />
+          <End Role="WordPerCategory_tbl" Type="Self.WordPerCategory_tbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WordCategory_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPerCategory_tbl">
+              <PropertyRef Name="word" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPerCat__word__5DCAEF64">
+          <End Role="WordCategory_tbl" Type="Self.WordCategory_tbl" Multiplicity="0..1" />
+          <End Role="WordPerCategory" Type="Self.WordPerCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WordCategory_tbl">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPerCategory">
+              <PropertyRef Name="word" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Receipts_dbEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category_tbl" EntityType="Self.Category_tbl" />
+          <EntitySet Name="NumCompeny_tbl" EntityType="Self.NumCompeny_tbl" />
+          <EntitySet Name="NumCompenyCategory_tbl" EntityType="Self.NumCompenyCategory_tbl" />
+          <EntitySet Name="Products_tbl" EntityType="Self.Products_tbl" />
+          <EntitySet Name="Receipt_tbl" EntityType="Self.Receipt_tbl" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="UnusingWord_tbl" EntityType="Self.UnusingWord_tbl" />
+          <EntitySet Name="User_tbl" EntityType="Self.User_tbl" />
+          <EntitySet Name="WordCategory_tbl" EntityType="Self.WordCategory_tbl" />
+          <EntitySet Name="WordPerCategory" EntityType="Self.WordPerCategory" />
+          <EntitySet Name="WordPerCategory_tbl" EntityType="Self.WordPerCategory_tbl" />
+          <AssociationSet Name="FK__NumCompen__categ__38996AB5" Association="Self.FK__NumCompen__categ__38996AB5">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="NumCompenyCategory_tbl" EntitySet="NumCompenyCategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt_t__categ__29572725" Association="Self.FK__Receipt_t__categ__29572725">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt_t__categ__5AEE82B9" Association="Self.FK__Receipt_t__categ__5AEE82B9">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPerCa__categ__32E0915F" Association="Self.FK__WordPerCa__categ__32E0915F">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="WordPerCategory_tbl" EntitySet="WordPerCategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPerCa__categ__5CD6CB2B" Association="Self.FK__WordPerCa__categ__5CD6CB2B">
+            <End Role="Category_tbl" EntitySet="Category_tbl" />
+            <End Role="WordPerCategory" EntitySet="WordPerCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NumCompeny__word__398D8EEE" Association="Self.FK__NumCompeny__word__398D8EEE">
+            <End Role="NumCompeny_tbl" EntitySet="NumCompeny_tbl" />
+            <End Role="NumCompenyCategory_tbl" EntitySet="NumCompenyCategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products___recei__2C3393D0" Association="Self.FK__Products___recei__2C3393D0">
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+            <End Role="Products_tbl" EntitySet="Products_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products___recei__59FA5E80" Association="Self.FK__Products___recei__59FA5E80">
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+            <End Role="Products_tbl" EntitySet="Products_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt_t__myUse__286302EC" Association="Self.FK__Receipt_t__myUse__286302EC">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Receipt_t__myUse__5BE2A6F2" Association="Self.FK__Receipt_t__myUse__5BE2A6F2">
+            <End Role="User_tbl" EntitySet="User_tbl" />
+            <End Role="Receipt_tbl" EntitySet="Receipt_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPerCat__word__33D4B598" Association="Self.FK__WordPerCat__word__33D4B598">
+            <End Role="WordCategory_tbl" EntitySet="WordCategory_tbl" />
+            <End Role="WordPerCategory_tbl" EntitySet="WordPerCategory_tbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPerCat__word__5DCAEF64" Association="Self.FK__WordPerCat__word__5DCAEF64">
+            <End Role="WordCategory_tbl" EntitySet="WordCategory_tbl" />
+            <End Role="WordPerCategory" EntitySet="WordPerCategory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Receipts_dbModelStoreContainer" CdmEntityContainer="Receipts_dbEntities1">
+          <EntitySetMapping Name="Category_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.Category_tbl">
+              <MappingFragment StoreEntitySet="Category_tbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="nameCategory" ColumnName="nameCategory" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NumCompeny_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.NumCompeny_tbl">
+              <MappingFragment StoreEntitySet="NumCompeny_tbl">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="numCompany" ColumnName="numCompany" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NumCompenyCategory_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.NumCompenyCategory_tbl">
+              <MappingFragment StoreEntitySet="NumCompenyCategory_tbl">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="word" ColumnName="word" />
+                <ScalarProperty Name="countShow" ColumnName="countShow" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.Products_tbl">
+              <MappingFragment StoreEntitySet="Products_tbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="nameProduct" ColumnName="nameProduct" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="sumProduct" ColumnName="sumProduct" />
+                <ScalarProperty Name="receipt" ColumnName="receipt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Receipt_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.Receipt_tbl">
+              <MappingFragment StoreEntitySet="Receipt_tbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="dateReceipt" ColumnName="dateReceipt" />
+                <ScalarProperty Name="nameShop" ColumnName="nameShop" />
+                <ScalarProperty Name="numCompany" ColumnName="numCompany" />
+                <ScalarProperty Name="totalSum" ColumnName="totalSum" />
+                <ScalarProperty Name="myUser" ColumnName="myUser" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="path" ColumnName="path" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Receipts_dbModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnusingWord_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.UnusingWord_tbl">
+              <MappingFragment StoreEntitySet="UnusingWord_tbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="unusingWord" ColumnName="unusingWord" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.User_tbl">
+              <MappingFragment StoreEntitySet="User_tbl">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="businessName" ColumnName="businessName" />
+                <ScalarProperty Name="emailAddress" ColumnName="emailAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WordCategory_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.WordCategory_tbl">
+              <MappingFragment StoreEntitySet="WordCategory_tbl">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="categoryWord" ColumnName="categoryWord" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WordPerCategory">
+            <EntityTypeMapping TypeName="Receipts_dbModel.WordPerCategory">
+              <MappingFragment StoreEntitySet="WordPerCategory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="word" ColumnName="word" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WordPerCategory_tbl">
+            <EntityTypeMapping TypeName="Receipts_dbModel.WordPerCategory_tbl">
+              <MappingFragment StoreEntitySet="WordPerCategory_tbl">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="word" ColumnName="word" />
+                <ScalarProperty Name="countWord" ColumnName="countWord" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
